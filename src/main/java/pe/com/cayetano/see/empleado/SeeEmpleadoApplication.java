@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 
@@ -11,6 +12,7 @@ import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 @OpenAPIDefinition
 @EnableFeignClients("pe.com.cayetano.see.empleado")
 @ImportAutoConfiguration({FeignAutoConfiguration.class})
+@EnableDiscoveryClient
 public class SeeEmpleadoApplication {
 
 	public static void main(String[] args) {
