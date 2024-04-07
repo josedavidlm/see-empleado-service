@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 @Getter
 @Entity
-@Table(name = "empresa", schema = "dse")
+@Table(name = "empleado", schema = "dse")
 @IdClass(EmpleadoId.class)
 public class EmpleadoEntity extends  AuditoriaEntidadEntity implements Serializable {
 

@@ -30,7 +30,7 @@ import java.util.Optional;
 
 
 @Service
-public class EmpresaServiceImpl implements EmpleadoService {
+public class EmpleadoServiceImpl implements EmpleadoService {
 
     @Autowired
     ReniecClient reniecClient;
@@ -105,17 +105,17 @@ public class EmpresaServiceImpl implements EmpleadoService {
 
         var obj = modelMapper.map(empleadoBd, EmpleadoResponse.class);
 
-        var estado = obj.getActivo();
-
-        if( Boolean.TRUE.equals(estado)){
-            obj.setEstado(Estado.ACTIVO.name());
-        }else{
-            obj.setEstado(Estado.INACTIVO.name());
-        }
-        lstResponse.add(obj);
-
         if(empleadoBd.isPresent())
         {
+            var estado = obj.getActivo();
+
+            if( Boolean.TRUE.equals(estado)){
+                obj.setEstado(Estado.ACTIVO.name());
+            }else{
+                obj.setEstado(Estado.INACTIVO.name());
+            }
+            lstResponse.add(obj);
+
             return new ResponseBase(Constantes.API_STATUS_200, config.getMessage(Constantes.ENCONTRADO), true, lstResponse);
         }
         return new ResponseBase(Constantes.API_STATUS_404, config.getMessage(Constantes.NO_REGISTRO), false, null);
@@ -241,11 +241,11 @@ public class EmpresaServiceImpl implements EmpleadoService {
     @Override
     public ResponseBasePage listarEmpleado(EmpleadoListRequest request) {
         Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize());
-        var response =  new CustomPage(empleadoRepository.listarEmpresa(request, pageable));
+        var response =  new CustomPage(empleadoRepository.listarEmpleado(request, pageable));
         if (response.getData().isEmpty()) {
-            return new ResponseBasePage(Constantes.API_STATUS_404, config.getMessage(Constantes.NO_REGISTRO), false, response);
+            return new ResponseBasePage(Constantes.API_STATUS_404, config.getMessage(Constantes.NO_REGISTRO), false, response.getData());
         }
-        return new ResponseBasePage(Constantes.API_STATUS_200,  config.getMessage(Constantes.LISTA_ENCONTRADO) , true, response);
+        return new ResponseBasePage(Constantes.API_STATUS_200,  config.getMessage(Constantes.LISTA_ENCONTRADO) , true, response.getData());
 
     }
 

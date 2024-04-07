@@ -28,15 +28,31 @@ public interface EmpleadoRepository extends JpaRepository<EmpleadoEntity, Emplea
 
   String QUERY_TABLA = """
                 WHERE (CAST(:#{#rq.codempresa}  AS INTEGER) IS NULL OR codempresa = :#{#rq.codempresa})
-                  AND (CAST(:#{#rq.desempresa} AS TEXT) IS NULL OR desempresa LIKE '%'||:#{#rq.desempresa}||'%')
-                  AND (CAST(:#{#rq.deaempresa} AS TEXT) IS NULL OR deaempresa LIKE '%'||:#{#rq.deaempresa}||'%' )
+                  AND (CAST(:#{#rq.codemp} AS INTEGER) IS NULL OR codemp = :#{#rq.codemp})
+                  AND (CAST(:#{#rq.tipdid} AS INTEGER) IS NULL OR codemp = :#{#rq.tipdid})                  
+                  AND (CAST(:#{#rq.numdid} AS TEXT) IS NULL OR numdid LIKE '%'||:#{#rq.numdid}||'%')
+                  AND (CAST(:#{#rq.nombre} AS TEXT) IS NULL OR nombre LIKE '%'||:#{#rq.nombre}||'%')                  
+                  AND (CAST(:#{#rq.apepat} AS TEXT) IS NULL OR apepat LIKE '%'||:#{#rq.apepat}||'%')
+                  AND (CAST(:#{#rq.apemat} AS TEXT) IS NULL OR apemat LIKE '%'||:#{#rq.apemat}||'%')
+                  AND (CAST(:#{#rq.nomcompleto} AS TEXT) IS NULL OR nomcompleto LIKE '%'||:#{#rq.nomcompleto}||'%')
+                  
       """;
   @Query(value = """
             SELECT
-                codempresa,
-                desempresa,
-                deaempresa,
-                activo,
+                codempresa, 
+                codemp,
+                tipdid,
+                numdid,
+                nombre,
+                apepat,
+                apemat,
+                nomcompleto,
+                fecnac,
+                sexo,
+                codcargo,                
+                codest, 
+                CASE WHEN codest = 1 THEN 'ACTIVO' WHEN codest = 2 THEN 'EN USO' WHEN codest = 3 THEN 'ANULADO' END as estado, 
+                activo, 
                 CASE WHEN activo THEN 'ACTIVO' ELSE 'INACTIVO' END as desActivo,
                 feccreacion,
                 codusuariocreacion,
@@ -47,13 +63,13 @@ public interface EmpleadoRepository extends JpaRepository<EmpleadoEntity, Emplea
                 codusuarioeliminacion,
                 feceliminacion,
                 nomtereliminacion
-            FROM dse.empresa            
+            FROM dse.empleado          
           """ + QUERY_TABLA,
       countQuery = """
           SELECT COUNT(1)
           """ + QUERY_TABLA,
       nativeQuery = true)
-  Page<EmpleadoProjection> listarEmpresa(
+  Page<EmpleadoProjection> listarEmpleado(
       @Param("rq") EmpleadoListRequest rq,
       @PageableDefault(page = 0, size = 10) Pageable pageable
   );
