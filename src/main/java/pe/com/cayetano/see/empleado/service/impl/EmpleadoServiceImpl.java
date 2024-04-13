@@ -1,5 +1,6 @@
 package pe.com.cayetano.see.empleado.service.impl;
 
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -48,7 +49,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     @Autowired
     private ModelMapper modelMapper;
 
-
+    @Transactional
     @Override
     public ResponseBase create(EmpleadoRequest empleado) {
         var lstResponse = new ArrayList<EmpleadoResponse>();
@@ -97,6 +98,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
             lstResponse);
     }
 
+
     @Override
     public ResponseBase findById(EmpleadoId empleadoId) {
 
@@ -121,6 +123,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         return new ResponseBase(Constantes.API_STATUS_404, config.getMessage(Constantes.NO_REGISTRO), false, null);
     }
 
+    @Transactional
     @Override
     public ResponseBase deleteById(EmpleadoRequest empleado) {
         var lstResponse = new ArrayList<EmpleadoResponse>();
@@ -154,6 +157,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         return new ResponseBase(Constantes.API_STATUS_404, config.getMessage(Constantes.NO_REGISTRO), false, null);
     }
 
+    @Transactional
     @Override
     public ResponseBase update(EmpleadoRequest empleado) {
         Optional<EmpleadoEntity> empresaBd = empleadoRepository.findById(new EmpleadoId(empleado.getCodEmpresa(),empleado.getCodemp()));
@@ -272,8 +276,6 @@ public class EmpleadoServiceImpl implements EmpleadoService {
                 config.getMessage(Constantes.ERROR) ,
                 false,
                 Optional.of(response));
-
-
         }
     }
 
